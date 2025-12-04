@@ -1,14 +1,57 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"strconv"
 )
 
-func main() {
-	var accountBalance = getBalanceFromFile()
+const accountBalanceFile = "balance.txt"
 
+func validateInput(infoText string) (float64, error) {
+	var input float64
+	fmt.Println(infoText)
+	fmt.Scan(&input)
+
+	if input <= 0 {
+		return 0, errors.New("Invalid input")
+	} else {
+		return input, nil
+	}
+}
+
+func writeBalanceToFile(balance float64) {
+	balanceText := fmt.Sprint(balance)
+	os.WriteFile(accountBalanceFile, []byte(balanceText), 0644)
+}
+
+func getBalanceFromFile() (float64, error) {
+	data, err := os.ReadFile(accountBalanceFile)
+
+	if err != nil {
+		return 1000, errors.New("Failed to find balance file.")
+	}
+
+	balanceText := string(data)
+	balance, err := strconv.ParseFloat(balanceText, 64)
+
+	if err != nil {
+		return 1000, errors.New("Failed to find balance file.")
+	}
+
+	return balance, nil
+}
+
+func main() {
+	var accountBalance, err = getBalanceFromFile()
+
+	if err != nil {
+		fmt.Println("ERROR")
+		fmt.Println(err)
+		fmt.Println("----------------------")
+		panic(err)
+	}
 	//for i := 0; i < 5; i++ {
 	//	fmt.Println("Test")
 	//}
@@ -61,18 +104,4 @@ func main() {
 	} else {
 		fmt.Println("Exiting...")
 	}
-}
-
-func writeBalanceToFile(balance float64) {
-	balanceText := fmt.Sprint(balance)
-	os.WriteFile(accountBalanceFile, []byte(balanceText), 0644)
-}
-
-const accountBalanceFile = "balance.txt"
-
-func getBalanceFromFile() float64 {
-	data, _ := os.ReadFile(accountBalanceFile)
-	balanceText := string(data)
-	balance, _ := strconv.ParseFloat(balanceText, 64)
-	return balance
 }
