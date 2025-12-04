@@ -32,6 +32,7 @@ func getUserInput(infoText string) (float64, error) {
 }
 
 func main() {
+
 	revenue, err := getUserInput("Revenue: ")
 
 	if err != nil {

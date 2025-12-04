@@ -1,3 +1,3 @@
-module Calculator
+module example.com/calculator
 
 go 1.25
