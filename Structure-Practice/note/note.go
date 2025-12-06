@@ -16,7 +16,7 @@ type Note struct {
 }
 
 func (note *Note) Display() {
-	fmt.Printf("Your note Title %v has the following Content:\n\n%v", note.Title, note.Content)
+	fmt.Printf("Your note Title %v has the following Content:\n\n%v\n", note.Title, note.Content)
 }
 
 func (note Note) Save() error {
